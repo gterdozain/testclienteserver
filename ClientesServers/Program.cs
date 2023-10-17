@@ -7,6 +7,7 @@ namespace SegundaAct2
 {
     class Program
     {
+
         static void Main(string[] args)
         {
             //Creamos servidor
@@ -20,16 +21,65 @@ namespace SegundaAct2
 
             NetworkStream ns1 = client1.GetStream();
 
-            StreamWriter sw = new StreamWriter(ns1);
-            StreamReader sr = new StreamReader(ns1);
+            BinaryWriter sw = new BinaryWriter(ns1);
+            BinaryReader sr = new BinaryReader(ns1);
+
+
 
             while (end == false)
             {
-                string msg1 = sr.ReadLine();
-                Console.WriteLine(msg1);
+                string commando = Console.ReadLine();
+                if (commando == "Patata")
+                {
+                    byte size = 2;
+                    sw.Write(size);
+                    short msgMessage = 21;
+                    sw.Write(msgMessage);
 
-                string msg = Console.ReadLine();
-                sw.WriteLine(msg);
+                }
+                else if (commando == "Lechuga")
+                {
+                    byte size = 4;
+                    sw.Write(size);
+                    int msgMessage = 31;
+                    sw.Write(msgMessage);
+
+                }
+                else if (commando == "Tomate")
+                {
+                    byte size = 8;
+                    sw.Write(size);
+                    ulong msgMessage = 41;
+                    sw.Write(msgMessage);
+
+                }
+
+                byte size2 =sr.ReadByte();
+               
+                if (size2 == 2)
+                {
+                    short msg = sr.ReadInt16();
+                    Console.WriteLine(msg);
+
+
+                }
+                else if (size2 == 4)
+                {
+                    
+                    int msg = sr.ReadInt32();
+                    Console.WriteLine(msg);
+                }
+                else if (size2 == 8)
+                {
+
+                    ulong msg = sr.ReadUInt64();
+                    Console.WriteLine(msg);
+                }
+
+
+
+                // string msg = Console.ReadLine();
+
 
                 sw.Flush();
             }
